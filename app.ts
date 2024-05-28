@@ -1,5 +1,6 @@
 // app.ts
 let tasks: string[] = [];
+const DATA_KEY = 'TodoItems'
 const todoItems: TodoItem[] = [];
 
 function renderTodoList() {
@@ -22,6 +23,7 @@ function addTodo() {
     todoItems.push(todoItem)
     tasks.push(newTask);
     todoInput.value = '';
+    saveTodoItems();
     renderTodoList();
   }
 }
@@ -34,15 +36,23 @@ interface TodoItem {
 
 function saveTodoItems() {
   // todoItemsをローカルストレージに保存する
+  const jsonData = JSON.stringify(todoItems);
+  console.log("save data:" + jsonData);
+  localStorage.setItem(DATA_KEY, jsonData);
 }
 
 function loadTodoItems() {
   // todoItemsをローカルストレージからロードする
+  todoItems.splice(0, todoItems.length);
+  const jsonData = localStorage.getItem(DATA_KEY)
+  console.log("load data:" + jsonData)
+  if (jsonData) {
+    todoItems.push(...JSON.parse(jsonData))
+  }
 }
 
-
-
 // 初期化
+loadTodoItems();
 renderTodoList();
 
 
