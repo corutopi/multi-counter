@@ -1,12 +1,17 @@
 // app.ts
 var tasks = [];
-var DATA_KEY = 'TodoItems';
-var todoItems = [];
+var DATA_KEY = 'TodoData';
+var VERSION_NUM = '0.0.1';
+var todoData = {
+    versionNum: VERSION_NUM,
+    todoItems: []
+};
 function renderTodoList() {
+    // todoリストを(再)表示する
     var todoList = document.getElementById('todoList');
     if (todoList) {
         todoList.innerHTML = '';
-        todoItems.forEach(function (todoItem) {
+        todoData.todoItems.forEach(function (todoItem) {
             var li = document.createElement('li');
             li.textContent = todoItem.name;
             todoList.appendChild(li);
@@ -14,11 +19,12 @@ function renderTodoList() {
     }
 }
 function addTodo() {
+    // todoリストを追加する
     var todoInput = document.getElementById('todoInput');
     var newTask = todoInput.value.trim();
     if (newTask !== '') {
         var todoItem = { id: 1, name: newTask, isComplate: false };
-        todoItems.push(todoItem);
+        todoData.todoItems.push(todoItem);
         tasks.push(newTask);
         todoInput.value = '';
         saveTodoItems();
@@ -27,17 +33,16 @@ function addTodo() {
 }
 function saveTodoItems() {
     // todoItemsをローカルストレージに保存する
-    var jsonData = JSON.stringify(todoItems);
+    var jsonData = JSON.stringify(todoData);
     console.log("save data:" + jsonData);
     localStorage.setItem(DATA_KEY, jsonData);
 }
 function loadTodoItems() {
     // todoItemsをローカルストレージからロードする
-    todoItems.splice(0, todoItems.length);
     var jsonData = localStorage.getItem(DATA_KEY);
     console.log("load data:" + jsonData);
     if (jsonData) {
-        todoItems.push.apply(todoItems, JSON.parse(jsonData));
+        todoData = JSON.parse(jsonData);
     }
 }
 // 初期化
