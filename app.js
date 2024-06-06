@@ -6,6 +6,7 @@ var todoData = {
     versionNum: VERSION_NUM,
     todoItems: []
 };
+var idNum = 0;
 function renderTodoList() {
     // todoリストを(再)表示する
     var todoList = document.getElementById('todoList');
@@ -15,6 +16,7 @@ function renderTodoList() {
             var li = document.createElement('li');
             li.textContent = todoItem.name;
             todoList.appendChild(li);
+            idNum = Math.max(idNum, todoItem.id);
         });
     }
 }
@@ -23,7 +25,7 @@ function addTodo() {
     var todoInput = document.getElementById('todoInput');
     var newTask = todoInput.value.trim();
     if (newTask !== '') {
-        var todoItem = { id: 1, name: newTask, isComplate: false };
+        var todoItem = { id: ++idNum, name: newTask, isComplate: false };
         todoData.todoItems.push(todoItem);
         tasks.push(newTask);
         todoInput.value = '';
