@@ -14,11 +14,22 @@ function renderTodoList() {
         todoList.innerHTML = '';
         todoData.todoItems.forEach(function (todoItem) {
             var li = document.createElement('li');
-            li.textContent = todoItem.name;
+            var span = document.createElement('span');
+            span.textContent = todoItem.name;
+            var deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = function () { return deleteTodo(todoItem.name); };
+            li.appendChild(span);
+            li.appendChild(deleteButton);
             todoList.appendChild(li);
             idNum = Math.max(idNum, todoItem.id);
         });
     }
+}
+function deleteTodo(key) {
+    todoData.todoItems = todoData.todoItems.filter(function (item) { return item.name !== key; });
+    saveTodoItems();
+    renderTodoList();
 }
 function addTodo() {
     // todoリストを追加する

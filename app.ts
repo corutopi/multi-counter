@@ -8,6 +8,7 @@ var todoData: TodoData = {
 };
 var idNum: number = 0
 
+
 function renderTodoList() {
   // todoリストを(再)表示する
   const todoList = document.getElementById('todoList');
@@ -15,11 +16,26 @@ function renderTodoList() {
     todoList.innerHTML = '';
     todoData.todoItems.forEach(todoItem => {
       const li = document.createElement('li');
-      li.textContent = todoItem.name;
+
+      const span = document.createElement('span');
+      span.textContent = todoItem.name;
+
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.onclick = () => deleteTodo(todoItem.name);
+
+      li.appendChild(span);
+      li.appendChild(deleteButton);
       todoList.appendChild(li);
       idNum = Math.max(idNum, todoItem.id);
     });
   }
+}
+
+function deleteTodo(key: string) {
+  todoData.todoItems = todoData.todoItems.filter(item => item.name !== key);
+  saveTodoItems();
+  renderTodoList();
 }
 
 function addTodo() {

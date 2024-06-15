@@ -24,6 +24,28 @@ ul {
 }
 
 li {
-  margin: 10px 0;
+  padding: 10px;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li span {
+  flex-grow: 1;
+  text-align: left;
+}
+
+li button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+li button:hover {
+  background-color: darkred;
 }
   
