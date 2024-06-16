@@ -16,15 +16,29 @@ function renderTodoList() {
             var li = document.createElement('li');
             var span = document.createElement('span');
             span.textContent = todoItem.name;
+            var span1 = document.createElement('span');
+            span1.textContent = todoItem.counter.toString();
+            var countUpButton = document.createElement('button');
+            countUpButton.textContent = '+';
+            countUpButton.onclick = function () { return countUp(todoItem.name); };
             var deleteButton = document.createElement('button');
             deleteButton.textContent = 'Delete';
             deleteButton.onclick = function () { return deleteTodo(todoItem.name); };
             li.appendChild(span);
+            li.appendChild(span1);
+            li.appendChild(countUpButton);
             li.appendChild(deleteButton);
             todoList.appendChild(li);
             idNum = Math.max(idNum, todoItem.id);
         });
     }
+}
+function countUp(key) {
+    todoData.todoItems
+        .filter(function (item) { return item.name === key; })
+        .forEach(function (item) { item.counter += 1; });
+    saveTodoItems();
+    renderTodoList();
 }
 function deleteTodo(key) {
     todoData.todoItems = todoData.todoItems.filter(function (item) { return item.name !== key; });
@@ -36,7 +50,7 @@ function addTodo() {
     var todoInput = document.getElementById('todoInput');
     var newTask = todoInput.value.trim();
     if (newTask !== '') {
-        var todoItem = { id: ++idNum, name: newTask, isComplate: false };
+        var todoItem = { id: ++idNum, name: newTask, counter: 0 };
         todoData.todoItems.push(todoItem);
         tasks.push(newTask);
         todoInput.value = '';

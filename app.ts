@@ -20,16 +20,33 @@ function renderTodoList() {
       const span = document.createElement('span');
       span.textContent = todoItem.name;
 
+      const span1 = document.createElement('span');
+      span1.textContent = todoItem.counter.toString();
+
+      const countUpButton = document.createElement('button');
+      countUpButton.textContent = '+';
+      countUpButton.onclick = () => countUp(todoItem.name);
+
       const deleteButton = document.createElement('button');
       deleteButton.textContent = 'Delete';
       deleteButton.onclick = () => deleteTodo(todoItem.name);
 
       li.appendChild(span);
+      li.appendChild(span1);
+      li.appendChild(countUpButton);
       li.appendChild(deleteButton);
       todoList.appendChild(li);
       idNum = Math.max(idNum, todoItem.id);
     });
   }
+}
+
+function countUp(key: string){
+  todoData.todoItems
+    .filter(item => item.name === key)
+    .forEach(item => { item.counter += 1 });
+  saveTodoItems();
+  renderTodoList();
 }
 
 function deleteTodo(key: string) {
@@ -43,7 +60,7 @@ function addTodo() {
   const todoInput = document.getElementById('todoInput') as HTMLInputElement;
   const newTask = todoInput.value.trim();
   if (newTask !== '') {
-    const todoItem: TodoItem = {id: ++idNum, name: newTask, isComplate: false}
+    const todoItem: TodoItem = {id: ++idNum, name: newTask, counter: 0}
     todoData.todoItems.push(todoItem)
     tasks.push(newTask);
     todoInput.value = '';
@@ -60,7 +77,8 @@ interface TodoData {
 interface TodoItem {
   id: number;
   name: string;
-  isComplate: boolean;
+  counter: number;
+  // isComplate: boolean;
 }
 
 function saveTodoItems() {
