@@ -20,9 +20,11 @@ function renderTodoList() {
             span1.textContent = todoItem.counter.toString();
             var countUpButton = document.createElement('button');
             countUpButton.textContent = '+';
+            countUpButton.className = 'add-button';
             countUpButton.onclick = function () { return countUp(todoItem.name); };
             var deleteButton = document.createElement('button');
             deleteButton.textContent = 'Delete';
+            deleteButton.className = 'delete-button';
             deleteButton.onclick = function () { return deleteTodo(todoItem.name); };
             li.appendChild(span);
             li.appendChild(span1);

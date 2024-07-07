@@ -37,7 +37,21 @@ li span {
   text-align: left;
 }
 
-li button {
+/* Styles for add button */
+li .add-button {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+li .add-button:hover {
+  background-color: darkgreen;
+}
+
+/* Styles for delete button */
+li .delete-button {
   background-color: red;
   color: white;
   border: none;
@@ -45,7 +59,6 @@ li button {
   cursor: pointer;
 }
 
-li button:hover {
+li .delete-button:hover {
   background-color: darkred;
 }
-  

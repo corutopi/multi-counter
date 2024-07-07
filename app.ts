@@ -25,10 +25,12 @@ function renderTodoList() {
 
       const countUpButton = document.createElement('button');
       countUpButton.textContent = '+';
+      countUpButton.className = 'add-button'
       countUpButton.onclick = () => countUp(todoItem.name);
 
       const deleteButton = document.createElement('button');
       deleteButton.textContent = 'Delete';
+      deleteButton.className = 'delete-button'
       deleteButton.onclick = () => deleteTodo(todoItem.name);
 
       li.appendChild(span);
