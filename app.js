@@ -22,6 +22,10 @@ function renderTodoList() {
             countUpButton.textContent = '+';
             countUpButton.className = 'add-button';
             countUpButton.onclick = function () { return countUp(todoItem.name); };
+            var countDownButton = document.createElement('button');
+            countDownButton.textContent = '-';
+            countDownButton.className = 'sub-button';
+            countDownButton.onclick = function () { return countUp(todoItem.name); };
             var deleteButton = document.createElement('button');
             deleteButton.textContent = 'Delete';
             deleteButton.className = 'delete-button';
@@ -29,6 +33,7 @@ function renderTodoList() {
             li.appendChild(span);
             li.appendChild(span1);
             li.appendChild(countUpButton);
+            li.appendChild(countDownButton);
             li.appendChild(deleteButton);
             todoList.appendChild(li);
             idNum = Math.max(idNum, todoItem.id);
@@ -36,6 +41,13 @@ function renderTodoList() {
     }
 }
 function countUp(key) {
+    todoData.todoItems
+        .filter(function (item) { return item.name === key; })
+        .forEach(function (item) { item.counter += 1; });
+    saveTodoItems();
+    renderTodoList();
+}
+function countDown(key) {
     todoData.todoItems
         .filter(function (item) { return item.name === key; })
         .forEach(function (item) { item.counter += 1; });

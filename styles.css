@@ -50,6 +50,19 @@ li .add-button:hover {
   background-color: darkgreen;
 }
 
+/* Styles for sub button */
+li .sub-button {
+  background-color: orange;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+li .sub-button:hover {
+  background-color: darkorange;
+}
+
 /* Styles for delete button */
 li .delete-button {
   background-color: red;

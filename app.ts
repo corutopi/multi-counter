@@ -28,6 +28,11 @@ function renderTodoList() {
       countUpButton.className = 'add-button'
       countUpButton.onclick = () => countUp(todoItem.name);
 
+      const countDownButton = document.createElement('button');
+      countDownButton.textContent = '-';
+      countDownButton.className = 'sub-button'
+      countDownButton.onclick = () => countUp(todoItem.name);
+
       const deleteButton = document.createElement('button');
       deleteButton.textContent = 'Delete';
       deleteButton.className = 'delete-button'
@@ -36,6 +41,7 @@ function renderTodoList() {
       li.appendChild(span);
       li.appendChild(span1);
       li.appendChild(countUpButton);
+      li.appendChild(countDownButton);
       li.appendChild(deleteButton);
       todoList.appendChild(li);
       idNum = Math.max(idNum, todoItem.id);
@@ -44,6 +50,14 @@ function renderTodoList() {
 }
 
 function countUp(key: string){
+  todoData.todoItems
+    .filter(item => item.name === key)
+    .forEach(item => { item.counter += 1 });
+  saveTodoItems();
+  renderTodoList();
+}
+
+function countDown(key: string){
   todoData.todoItems
     .filter(item => item.name === key)
     .forEach(item => { item.counter += 1 });
