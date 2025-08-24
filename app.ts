@@ -31,7 +31,7 @@ function renderTodoList() {
       const countDownButton = document.createElement('button');
       countDownButton.textContent = '-';
       countDownButton.className = 'sub-button'
-      countDownButton.onclick = () => countUp(todoItem.name);
+      countDownButton.onclick = () => countDown(todoItem.name);
 
       const deleteButton = document.createElement('button');
       deleteButton.textContent = 'Delete';
@@ -60,7 +60,7 @@ function countUp(key: string){
 function countDown(key: string){
   todoData.todoItems
     .filter(item => item.name === key)
-    .forEach(item => { item.counter += 1 });
+    .forEach(item => { item.counter -= 1 });
   saveTodoItems();
   renderTodoList();
 }
