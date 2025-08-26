@@ -64,6 +64,20 @@ li .sub-button:hover {
   background-color: darkorange;
 }
 
+/* Styles for detail button */
+li .detail-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  /* margin-left: 5px; */
+}
+
+li .detail-button:hover {
+  background-color: #0056b3;
+}
+
 /* Styles for delete button */
 li .delete-button {
   background-color: red;
