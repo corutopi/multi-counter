@@ -9,29 +9,29 @@
 </head>
 <body>
   <div id="app">
-    <h1>My To-Do App</h1>
-    <ul id="todoList">
+    <h1>Multi Counter</h1>
+    <ul id="counterList">
       <li><span>abc</span><span>0</span><button>+</button><button>Delete</button></li>
     </ul>
-    <input type="text" id="todoInput" placeholder="Add a new task">
-    <button onclick="addTodo()">Add Task</button>
+    <input type="text" id="counterInput" placeholder="Add a new counter name">
+    <button onclick="addCounter()">Add Task</button>
   </div>
   <script src="app.js"></script>
 
   <!-- モーダルウィンドウ -->
-<div id="detailModal" style="display:none; position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); justify-content:center; align-items:center;">
-  <div style="background:#fff; padding:20px; border-radius:8px; min-width:300px;">
-    <h3 id="detailModalTitle">詳細設定</h3>
-    <label>
-      時間経過による自動加算を有効にする
-      <input type="checkbox" id="autoCountupCheckbox">
-    </label>
-    <br><br>
-    <label>自動加算インターバル(ms): <input type="number" id="intervalInput" value="1000" min="100"></label><br><br>
-    <label>加算する数値: <input type="number" id="addValueInput" value="1" min="1"></label><br><br>
-    <button id="detailOkButton">OK</button>
-    <button id="detailCancelButton">Cancel</button>
+  <div id="detailModal" style="display:none; position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); justify-content:center; align-items:center;">
+    <div style="background:#fff; padding:20px; border-radius:8px; min-width:300px;">
+      <h3 id="detailModalTitle">詳細設定</h3>
+      <label>
+        時間経過による自動加算を有効にする
+        <input type="checkbox" id="autoCountupCheckbox">
+      </label>
+      <br><br>
+      <label>自動加算インターバル(ms): <input type="number" id="intervalInput" value="1000" min="100"></label><br><br>
+      <label>加算する数値: <input type="number" id="addValueInput" value="1" min="1"></label><br><br>
+      <button id="detailOkButton">OK</button>
+      <button id="detailCancelButton">Cancel</button>
+    </div>
   </div>
-</div>
 </body>
 </html>

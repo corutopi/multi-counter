@@ -1,22 +1,22 @@
 // app.ts
 let tasks: string[] = [];
-const DATA_KEY = 'TodoData'
-const VERSION_NUM = '0.0.1'
-var todoData: TodoData = {
+const DATA_KEY = 'CounterData'
+const VERSION_NUM = '0.0.2'
+var counterData: CounterData = {
   versionNum: VERSION_NUM,
-  todoItems: []
+  counterItems: []
 };
 var idNum: number = 0
 
 
-function renderTodoList() {
-  // todoリストを(再)表示する
-  const todoList = document.getElementById('todoList');
+function renderCounterList() {
+  // カウンターリストを(再)表示する
+  const counterList = document.getElementById('counterList');
 
   // --- 自動加算処理 ---
   const now = Date.now();
-  todoData.todoItems.forEach(todoItem => {
-    const detail = todoItem.detail;
+  counterData.counterItems.forEach(counterItem => {
+    const detail = counterItem.detail;
     const auto = detail?.autoCountupByTime;
     if (auto?.isActive && auto.interval && auto.addnum && auto.baseDatetime) {
       // lastCheckDatetimeがなければbaseDatetimeを使う
@@ -25,47 +25,47 @@ function renderTodoList() {
       const elapsed = now - lastChecked;
       const times = Math.floor(elapsed / auto.interval);
       if (times > 0) {
-        todoItem.counter += times * auto.addnum;
+        counterItem.counter += times * auto.addnum;
         // lastCheckDatetimeを更新
-        if (todoItem.detail && todoItem.detail.autoCountupByTime) {
-          todoItem.detail.autoCountupByTime.lastCheckDatetime = lastChecked + times * auto.interval;
+        if (counterItem.detail && counterItem.detail.autoCountupByTime) {
+          counterItem.detail.autoCountupByTime.lastCheckDatetime = lastChecked + times * auto.interval;
         }
       }
     }
   });
-  saveTodoItems();
+  saveCounterItems();
 
-  if (todoList) {
-    todoList.innerHTML = '';
-    todoData.todoItems.forEach(todoItem => {
+  if (counterList) {
+    counterList.innerHTML = '';
+    counterData.counterItems.forEach(counterItem => {
       const li = document.createElement('li');
 
       const span = document.createElement('span');
-      span.textContent = todoItem.name;
+      span.textContent = counterItem.name;
 
       const span1 = document.createElement('span');
-      span1.textContent = todoItem.counter.toString();
+      span1.textContent = counterItem.counter.toString();
 
       const countUpButton = document.createElement('button');
       countUpButton.textContent = '+';
       countUpButton.className = 'add-button'
-      countUpButton.onclick = () => countUp(todoItem.name);
+      countUpButton.onclick = () => countUp(counterItem.name);
 
       const countDownButton = document.createElement('button');
       countDownButton.textContent = '-';
       countDownButton.className = 'sub-button'
-      countDownButton.onclick = () => countDown(todoItem.name);
+      countDownButton.onclick = () => countDown(counterItem.name);
 
       // Detailボタン追加
       const detailButton = document.createElement('button');
       detailButton.textContent = 'Detail';
       detailButton.className = 'detail-button';
-      detailButton.onclick = () => openDetailModal(todoItem.name);
+      detailButton.onclick = () => openDetailModal(counterItem.name);
 
       const deleteButton = document.createElement('button');
       deleteButton.textContent = 'Delete';
       deleteButton.className = 'delete-button'
-      deleteButton.onclick = () => deleteTodo(todoItem.name);
+      deleteButton.onclick = () => deleteCounter(counterItem.name);
 
       li.appendChild(span);
       li.appendChild(span1);
@@ -73,26 +73,26 @@ function renderTodoList() {
       li.appendChild(countDownButton);
       li.appendChild(detailButton);
       li.appendChild(deleteButton);
-      todoList.appendChild(li);
-      idNum = Math.max(idNum, todoItem.id);
+      counterList.appendChild(li);
+      idNum = Math.max(idNum, counterItem.id);
     });
   }
 }
 
 function countUp(key: string){
-  todoData.todoItems
+  counterData.counterItems
     .filter(item => item.name === key)
     .forEach(item => { item.counter += 1 });
-  saveTodoItems();
-  renderTodoList();
+  saveCounterItems();
+  renderCounterList();
 }
 
 function countDown(key: string){
-  todoData.todoItems
+  counterData.counterItems
     .filter(item => item.name === key)
     .forEach(item => { item.counter -= 1 });
-  saveTodoItems();
-  renderTodoList();
+  saveCounterItems();
+  renderCounterList();
 }
 
 // モーダル制御用変数
@@ -100,15 +100,15 @@ let currentDetailKey: string | null = null;
 
 // モーダルを開く
 function openDetailModal(key: string) {
-  currentDetailKey = key;  // モーダルタイトルをTodo名に変更
+  currentDetailKey = key;  // モーダルタイトルをカウンター名に変更
   const modalTitle = document.getElementById('detailModalTitle');
   if (modalTitle) {
     modalTitle.textContent = `詳細設定（${key}）`;
   }
 
   // 現在値を取得
-  const todoItem = todoData.todoItems.filter(item => item.name === key)[0];
-  const auto = todoItem?.detail?.autoCountupByTime;
+  const counterItem = counterData.counterItems.filter(item => item.name === key)[0];
+  const auto = counterItem?.detail?.autoCountupByTime;
 
   // チェックボックス・インターバル・加算値を反映
   const autoCountupCheckbox = document.getElementById('autoCountupCheckbox') as HTMLInputElement;
@@ -130,8 +130,8 @@ function closeDetailModal() {
 
 // モーダルのイベント設定
 window.onload = () => {
-  loadTodoItems();
-  renderTodoList();
+  loadCounterItems();
+  renderCounterList();
 
   const okBtn = document.getElementById('detailOkButton');
   const cancelBtn = document.getElementById('detailCancelButton');
@@ -142,7 +142,7 @@ window.onload = () => {
     const addValue = parseInt((document.getElementById('addValueInput') as HTMLInputElement).value, 10);
 
     // detail情報を保存
-    todoData.todoItems
+    counterData.counterItems
       .filter(item => item.name === currentDetailKey)
       .forEach(item => {
         if (!item.detail) item.detail = {};
@@ -159,38 +159,38 @@ window.onload = () => {
       });
 
     closeDetailModal();
-    saveTodoItems();
-    renderTodoList();
+    saveCounterItems();
+    renderCounterList();
   });
   cancelBtn?.addEventListener('click', closeDetailModal);
 }
 
-function deleteTodo(key: string) {
-  todoData.todoItems = todoData.todoItems.filter(item => item.name !== key);
-  saveTodoItems();
-  renderTodoList();
+function deleteCounter(key: string) {
+  counterData.counterItems = counterData.counterItems.filter(item => item.name !== key);
+  saveCounterItems();
+  renderCounterList();
 }
 
-function addTodo() {
-  // todoリストを追加する
-  const todoInput = document.getElementById('todoInput') as HTMLInputElement;
-  const newTask = todoInput.value.trim();
+function addCounter() {
+  // カウンターを追加する
+  const counterInput = document.getElementById('counterInput') as HTMLInputElement;
+  const newTask = counterInput.value.trim();
   if (newTask !== '') {
-    const todoItem: TodoItem = {id: ++idNum, name: newTask, counter: 0}
-    todoData.todoItems.push(todoItem)
+    const counterItem: CounterItem = {id: ++idNum, name: newTask, counter: 0}
+    counterData.counterItems.push(counterItem)
     tasks.push(newTask);
-    todoInput.value = '';
-    saveTodoItems();
-    renderTodoList();
+    counterInput.value = '';
+    saveCounterItems();
+    renderCounterList();
   }
 }
 
-interface TodoData {
+interface CounterData {
   versionNum: string;
-  todoItems: TodoItem[];
+  counterItems: CounterItem[];
 }
 
-interface TodoItem {
+interface CounterItem {
   id: number;
   name: string;
   counter: number;
@@ -208,24 +208,24 @@ interface Detail {
   }
 }
 
-function saveTodoItems() {
-  // todoItemsをローカルストレージに保存する
-  const jsonData = JSON.stringify(todoData);
+function saveCounterItems() {
+  // counterData をローカルストレージに保存する
+  const jsonData = JSON.stringify(counterData);
   console.log("save data:" + jsonData);
   localStorage.setItem(DATA_KEY, jsonData);
 }
 
-function loadTodoItems() {
-  // todoItemsをローカルストレージからロードする
+function loadCounterItems() {
+  // counterData をローカルストレージからロードする
   const jsonData = localStorage.getItem(DATA_KEY)
   console.log("load data:" + jsonData)
   if (jsonData) {
-    todoData = JSON.parse(jsonData)
+    counterData = JSON.parse(jsonData)
   }
 }
 
 // 初期化
-loadTodoItems();
-renderTodoList();
+loadCounterItems();
+renderCounterList();
 
 
